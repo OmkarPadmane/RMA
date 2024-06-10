@@ -30,6 +30,7 @@ $ sinfo
 
 
 # 2 --------------------
+$ scontrol show res
 
 --if user and account is avqilable
 
