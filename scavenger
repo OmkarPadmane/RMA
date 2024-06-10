@@ -27,6 +27,7 @@ $ srun -N 1 -n 1 --pty /bin/bash
 
 
 # 2 --------------------
+$ scontrol show res
 
 $ scontrol create reservation=reserve_lab partition=scavenger nodes=all duration=60 user=-root starttime=now
 
