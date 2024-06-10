@@ -1,0 +1,68 @@
+# 1 --------------------
+
+$ sudo -i
+
+---on master:
+
+$ vim /opt/slurm-21.08.8/etc/slurm.conf
+PartitionName=scavenger Nodes=compute1 MaxTime=31-00:00:00 DefaultTime=01:00:00 State=UP DisableRootJobs=YES
+
+
+$ scp /opt/slurm-21.08.8/etc/slurm.conf compute1:/opt/slurm-21.08.8/etc/
+$ scp /opt/slurm-21.08.8/etc/slurm.conf compute2:/opt/slurm-21.08.8/etc/
+$ systemctl restart slurmctld
+$ systemctl restart slurmd
+$ ssh compute1 systemctl restart slurmd
+$ ssh compute2 systemctl restart slurmd
+$ sinfo
+
+ 
+$ scontrol show partition=scavenger
+$ srun -N 1 -n 1 --pty /bin/bash
+
+
+# 2 --------------------
+
+$ scontrol create reservation=reserve_lab partition=scavenger nodes=all duration=60 user=-root starttime=now
+
+$ scontrol show res
+
+
+
+# 3 --------------------
+
+$ scontrol show nodes compute1
+
+$ scontrol show partition testp
+
+
+# 4 --------------------
+
+# create user  on master,compute1,2
+
+    $ groupadd -g 20000 rma
+    $ useradd s /bin/bash hpcsa1
+    $  passwd hpcsa1
+
+# create account in slurm 
+
+    $ sacctmgr add account testfac1-acc
+    $ sacctmgr show asso
+
+
+# assign user to account
+
+    $ sacctmgr create user name=hpcsa1 DefaultAccount=testfac1-acc
+    $ sacctmgr show asso
+
+# su - hpcsa1
+
+# sbatch -A testfac1-acc /nfs/job.sh
+
+---on root 
+   $ squeue
+
+
+
+
+
