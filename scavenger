@@ -51,8 +51,9 @@ $ scontrol show partition testp
 
 # create account in slurm 
 
-    $ sacctmgr delete account name=rmalab-acc
-    $ sacctmgr delete user name=rmalab
+    $ sacctmgr remove account name=rmalab-acc
+    $ sacctmgr remove user name=rmalab
+
 
     $ sacctmgr add account testfac1-acc
     $ sacctmgr show asso
