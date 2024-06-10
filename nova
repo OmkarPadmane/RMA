@@ -1,6 +1,8 @@
 # 1 --------------------
 
 # create user   
+on master ,compute 1,2
+
     $ groupadd -g 20000 rma
     $ useradd -u 2002 -g 20000 -m -d /nfs/hpcsa1 -s /bin/bash hpcsa1
     $ passwd hpcsa1
