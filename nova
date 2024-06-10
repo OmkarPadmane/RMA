@@ -1,0 +1,96 @@
+# 1 --------------------
+
+# create user   
+    $ groupadd -g 20000 rma
+    $ useradd -u 2002 -g 20000 -m -d /nfs/hpcsa1 -s /bin/bash hpcsa1
+    $ passwd hpcsa1
+
+
+# create account in slurm  
+    $ sacctmgr add account rmalab-acc
+
+# asign user to account
+    $ sacctmgr create user name=hpcsa1 DefaultAccount=rmalab-acc
+    $ sacctmgr show asso
+starttime 
+
+$ vim /opt/slurm-21.08.8/etc/slurm.conf
+       PartitionName=nova Nodes=compute1 Default=YES MaxTime=25-00:00:00 DefaultTime=30:00:00 State=UP AllowGroups=rma AllowAccounts=rmalab-acc
+
+
+$ scp /opt/slurm-21.08.8/etc/slurm.conf compute1:/opt/slurm-21.08.8/etc/
+$ scp /opt/slurm-21.08.8/etc/slurm.conf compute2:/opt/slurm-21.08.8/etc/
+$ systemctl restart slurmctld
+$ systemctl restart slurmd
+$ ssh compute1 systemctl restart slurmd
+$ ssh compute2 systemctl restart slurmd
+$ sinfo
+ 
+# scontrol show partition=nova
+
+
+# 2 --------------------
+
+--if user and account is avqilable
+
+$ sacctmgr remove account name=rmalab-acc
+$ sacctmgr remove user name=hpcsa1
+
+--- if reservation exists
+$ scontrol delete reservationname=reserve_lab
+
+
+$ scontrol create reservation=reserve_lab1 partition=nova starttime=now duration=90 account=rmalab-acc
+
+$ scontrol show res
+
+$ su - hpcsa1
+$ srun --reservation=reserve_lab1 -N 1 -n 1 --pty /bin/bash
+$ squeue
+
+$  scontrol delete  ReservationName=reserve_lab1
+
+
+
+# 3 --------------------
+
+$ sacctmgr delete user name=hpcsa1 DefaultAccount=rmalab-acc
+
+
+# create account in slurm  
+  $ sacctmgr add account quantum-acc
+
+# asign user to account
+    $ sacctmgr create user name=hpcsa1 DefaultAccount=quantum-acc 
+
+$ sacctmgr update user name=hpcsa1 set MaxJobs=15
+
+$ sacctmgr show asso User=hpcsa1
+
+$ vim /opt/slurm-21.08.8/etc/slurm.conf
+
+  PartitionName=nova Nodes=ALL Default=YES MaxTime=25-00:00:00 DefaultTime=30:00:00
+---restart
+
+$ su - hpcsa1
+
+$  srun -n 1 -A quantum-acc --time=01:00 --pty /bin/bash
+
+
+# 4 --------------------
+
+on master,compute1,2
+
+$ vim /opt/slurm-21.08.8/etc/slurm.conf
+
+	AccountingStorageEnforce=associations,limits,qos
+---restart
+
+$ sacctmgr create qos zebra
+$ sacctmgr show qos
+
+$ sacctmgr modify qos where qos=zebra set MaxTRES=node=1
+
+$ sacctmgr modify user name=hpcsa1 set qos=zebra
+
+
