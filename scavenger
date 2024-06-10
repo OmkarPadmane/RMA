@@ -63,12 +63,28 @@ $ scontrol show partition testp
     $ sacctmgr create user name=hpcsa1 DefaultAccount=testfac1-acc
     $ sacctmgr show asso
 
-# su - hpcsa1
+$ su - hpcsa1
+$ vim /nfs/job.sh
 
-# sbatch -A testfac1-acc /nfs/job.sh
+#! /bin/bash
+#SBATCH -N 1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=00:05:00
+#SBATCH --error=job.%J.err
+#SBATCH --output=job.%J.out
+#SBATCH -p scavenger
+cd $SLURM_SUBMIT_DIR
+
+
+echo "Starting at `date`"
+echo "running oh hosts:$SLURM_NODELIST"
+echo "hello"
+sleep 30
+
+$ sbatch -A testfac1-acc /nfs/job.sh
 
 ---on root 
-   $ squeue
+$ squeue
 
 
 
