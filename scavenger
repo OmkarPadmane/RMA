@@ -1,3 +1,8 @@
+$ sinfo
+
+---if node have * in them
+$ scontrol reconfigure
+
 # 1 --------------------
 
 $ sudo -i
@@ -41,7 +46,7 @@ $ scontrol show partition testp
 # create user  on master,compute1,2
 
     $ groupadd -g 20000 rma
-    $ useradd s /bin/bash hpcsa1
+    $ useradd -u 2002 -g 20000 -m -d /nfs/hpcsa1 -s /bin/bash hpcsa1
     $  passwd hpcsa1
 
 # create account in slurm 
