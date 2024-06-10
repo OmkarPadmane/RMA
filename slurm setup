@@ -1,0 +1,37 @@
+make vms master, compute 1,2
+
+File --> open--> select file--> name & path -->import
+
+password : master
+
+mobaxterm: session --> ip --> ok
+
+on master:
+	$ ip a
+	$ sudo -i
+	$ vim /etc/hosts
+		replace ips
+
+	$ vim /etc/exports
+		put ip of compute 1,2
+	
+	$ exportfs -arv
+	
+	----------------------
+
+on compute 1 ,2:
+	$ ip a
+	$ sudo -i
+	$ vim /etc/hosts
+		replace ips
+
+	$ vim /etc/fstab
+		put ip of master
+	
+	$ mount x.x.x.x:/nfs /nfs
+
+		ex. mount 192.168.14.154:/nfs /nfs
+		ip of master
+
+
+	$ df -TH
