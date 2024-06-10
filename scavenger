@@ -47,7 +47,7 @@ $ scontrol show partition testp
 
     $ groupadd -g 20000 rma
     $ useradd -u 2002 -g 20000 -m -d /nfs/hpcsa1 -s /bin/bash hpcsa1
-    $  passwd hpcsa1
+    $ passwd hpcsa1
 
 # create account in slurm 
 
