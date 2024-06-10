@@ -10,7 +10,7 @@ $ sudo -i
 ---on master:
 
 $ vim /opt/slurm-21.08.8/etc/slurm.conf
-PartitionName=scavenger Nodes=compute1 MaxTime=31-00:00:00 DefaultTime=01:00:00 State=UP DisableRootJobs=YES
+PartitionName=scavenger Nodes=compute1 Default=YES MaxTime=31-00:00:00 DefaultTime=01:00:00 State=UP DisableRootJobs=YES
 
 
 $ scp /opt/slurm-21.08.8/etc/slurm.conf compute1:/opt/slurm-21.08.8/etc/
