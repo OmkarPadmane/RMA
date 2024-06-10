@@ -38,7 +38,7 @@ $ sacctmgr remove account name=rmalab-acc
 $ sacctmgr remove user name=hpcsa1
 
 --- if reservation exists
-$ scontrol delete reservationname=reserve_lab
+$ scontrol remove reservationname=reserve_lab
 
 
 $ scontrol create reservation=reserve_lab1 partition=nova starttime=now duration=90 account=rmalab-acc
